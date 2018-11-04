@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <!-- Include meta tag to ensure proper rendering and touch zooming -->
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+
+	<!-- Include jQuery Mobile stylesheets -->
+	<link rel="stylesheet" href="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.css">
+
+	<!-- Include the jQuery library -->
+	<script src="https://code.jquery.com/jquery-1.11.3.min.js"></script>
+	<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>
+	<!-- Include the jQuery Mobile library -->
+	<script src="https://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.js"></script>
+    <title>videotest</title>
+
+     <style type="text/css">
+     	*{
+     		margin: 0;
+     		padding: 0;
+     	}
+     	html, body{
+     		height: 100%;
+     	}
+     	.container{
+     		width: 100%;
+     		height: 617px; //이거 조절
+     		min-height: 100%;
+     		margin: 0 auto;
+     	}
+      .container_event{
+     		width: 100%;
+     		height: 617px; //이거 조절
+     		min-height: 100%;
+     		margin: 0 auto;
+        opacity: 0.0;
+      }
+		.container_warraper{
+			width: 100%;
+     		height: 100%;
+		}
+
+     	.video{
+     		width: 100%;
+     		height: 100%;
+     	}
+
+     	.draggable{
+     		width: 100%;
+     		height: 100%;
+        position:absolute;
+     	}
+     	#draggableX{
+			background-color: black;
+      position:absolute;
+      top:0px;
+      left:0px;
+     	}
+     	#draggableY{
+     		background-color: red;
+        position:absolute;
+     		top:0px;
+     		left:0px;
+     	}
+     	#draggable{
+     		background-color: blue;
+     	}
+
+     	.droppable{
+     		width: 100%;
+     		height: 100%;
+        position:absolute;
+     	}
+
+     	#droppableY{
+     		background-color: yellow;
+     		position:absolute;
+     		top:0px;
+     		left:0px;
+     	}
+     </style>
+
+    <script type = 'text/javascript'>
+
+      var step1 = true;
+      var step2 = true;
+      var step3 = true;
+
+      var stepNow = 0;
+
+    	var eventFunc = {
+    		root : this,
+   			target : null,
+        targetv : null,
+   			draggable : null,
+
+   			init : function(){
+   				this.draggable.each(function(k, e){
+   					console.log(e);
+   				})
+   			},
+
+   			//target은 이벤트 주체가 되는 비디오를 말함
+    		targetReset : function(){
+    			this.targetv = null;
+    		},
+    		targetPause : function(){
+    			$(this.targetv).get(0).pause();
+    		},
+    		targetPlay : function(){
+    			$(this.targetv).get(0).play();
+    		},
+    		targetPlayAndPause : function(){
+    			var pause = $(this.targetv).get(0).paused;
+    			if(!pause){
+    				this.targetPause();
+    			}else{
+    				this.targetPlay();
+    			}
+    		},
+
+    		//timer
+    		//that : eventFunc의 targetPause를 사용하기 위함, 지금은 변수로 넘겨주는데 나중에 상속받아 쓸 것
+    		//end : 동영상이 멈추는 시간, 1000 = 1초
+    		targetPauseTimer : function(that, end){
+    			var timer = setInterval(function(){
+    				that.targetPause();
+    				clearInterval(timer);
+    			}, end);
+    		}
+    	};
+
+		$(document).ready(function(){
+			//eventFunc
+			var target = $('.container_event');
+      var targetv = $('.video');
+			var draggable = $('.draggable');
+      var onlytap = true;
+
+
+			eventFunc.target = target; //이벤트 주체
+      eventFunc.targetv = targetv; //이벤트 주체 -> 여기서는 비디오
+			eventFunc.draggable = draggable; //움직일 놈들
+
+			eventFunc.init(); //구현하다 말음
+			eventFunc.targetPlay(); //동영상 시작
+
+			//eventFunc.targetPauseTimer(eventFunc, 3000); //3초후 멈춤
+
+			//swipe event
+			target.on('swipeleft',function(){
+        onlytap = false;
+				console.log('swipeleft');
+			});
+			target.on('swiperight',function(){
+        onlytap = false;
+				console.log('swiperight');
+        if(step3 && stepNow == 6)
+        {
+          step3 = false;
+          stepNow++;
+          eventFunc.targetPlayAndPause();
+          console.log('swiperight upon!');
+        }
+			});
+			target.on('swipeup',function(){
+        onlytap = false;
+				console.log('swipeup');
+        if(step1 && stepNow == 2)
+        {
+          step1 = false;
+          stepNow = 3;
+          eventFunc.targetPlayAndPause();
+          console.log('swipeup on!');
+        }
+			});
+			target.on('swipedown',function(){
+        onlytap = false;
+				console.log('swipedown');
+			});
+			target.on('taphold',function(){
+        onlytap = false;
+				console.log('taphold');
+			});
+			//누를때마다 재생, 멈춤
+			target.on('tap',function(){
+        console.log('ontap : ' + onlytap);
+        if(onlytap)
+        {
+				  console.log('tap');
+          if(stepNow == 0)
+          {
+            stepNow = 1;
+            eventFunc.targetPlayAndPause();
+            console.log('strat tap on!');
+          }
+          if(step2 && stepNow == 4)
+          {
+            step2 = false;
+            stepNow = 5;
+            eventFunc.targetPlayAndPause();
+            console.log('tap on!');
+          }
+        }
+        else {
+          onlytap = true;
+        }
+			});
+
+			//axis : 드래그 방향 , containerment : 벗어나지 못하도록, scroll : 벗어나는 경우 스크롤바 안생기게
+			$("#draggableX").draggable({axis: "x", containment: "parent", scroll: false });
+
+			//click시 비디오 플레이
+			$("#draggableY").draggable({axis: "y", containment: "parent", scroll: false }).click(function(){
+				//3초 후에 눌러야 되는 놈
+				//eventFunc.targetPlay();
+			});
+			$("#draggable").draggable({containment: "parent", scroll: false }).click(function(){
+				console.log(this);
+			});
+
+			//드래그 되는 객체들을 드랍 할 때 다시 재생 되도록 하기 위함
+			$("#droppableY").droppable({
+				drop: function( event, ui ) {
+					console.log('check');
+				}
+			});
+
+
+      var video = document.getElementById("video");
+
+
+      document.getElementById("appdown").style.display = "none";
+
+      if(video) {
+
+        video.addEventListener("timeupdate", function() {
+
+            console.log(video.currentTime + "   Now : " + stepNow + "  step1 : " + step1 + "  step2 : " + step2 + "  step3 : " + step3);
+
+            if( video.currentTime >= 3 && step1)  {
+                video.pause();
+
+                //document.getElementById("swipe1").style.display = "block";
+                //document.getElementById("swipe1bg").style.display = "block";
+                stepNow = 2;
+
+                console.log("1차 정지");
+            }
+            else if( video.currentTime >= 9 && step2) {
+                video.pause();
+
+                //document.getElementById("tap").style.display = "block";
+                stepNow = 4;
+
+                console.log("2차 정지");
+            }
+            else if( video.currentTime >= 14 && step3 ) {
+                video.pause();
+
+                //document.getElementById("swipe2").style.display = "block";
+                //document.getElementById("swipe2bg").style.display = "block";
+                stepNow = 6;
+
+                console.log("3차 정지");
+            }
+            else if( video.currentTime >= 20.5 ) {
+
+                document.getElementById("appdown").style.display = "block";
+                console.log("다운 광고");
+            }
+          });
+        }
+		});
+
+
+
+
+	//스와이프 이벤트 추가 -> 따로 js로 뺄 것
+	//커브드 스와이프 구현하려면 손대야됨 아니면 볼 필요 없음
+	(function() {
+	// initializes touch and scroll events
+		var supportTouch = $.support.touch,
+			scrollEvent = "touchmove scroll",
+			touchStartEvent = supportTouch ? "touchstart" : "mousedown",
+			touchStopEvent = supportTouch ? "touchend" : "mouseup",
+			touchMoveEvent = supportTouch ? "touchmove" : "mousemove";
+	 // handles swipeup and swipedown
+		$.event.special.swipeupdown = {
+			setup: function() {
+				var thisObject = this;
+				var $this = $(thisObject);
+					 
+				$this.bind(touchStartEvent, function(event) {
+					var data = event.originalEvent.touches?event.originalEvent.touches[ 0 ]:event,
+					start = {
+						time: (new Date).getTime(),
+						coords: [ data.pageX, data.pageY ],
+						origin: $(event.target)
+					},
+					stop;
+			 
+					function moveHandler(event) {
+						if (!start) {
+							return;
+						}
+							 
+						var data = event.originalEvent.touches?event.originalEvent.touches[ 0 ]:event;
+						stop = {
+							time: (new Date).getTime(),
+							coords: [ data.pageX, data.pageY ]
+						};
+						 
+						// prevent scrolling
+						if (Math.abs(start.coords[1] - stop.coords[1]) > 10) {
+							event.preventDefault();
+						}
+					}
+					 
+					$this.bind(touchMoveEvent, moveHandler).one(touchStopEvent, function(event) {
+						$this.unbind(touchMoveEvent, moveHandler);
+						if (start && stop) {
+							if (stop.time - start.time < 1000 &&
+								Math.abs(start.coords[1] - stop.coords[1]) > 30 &&
+								Math.abs(start.coords[0] - stop.coords[0]) < 75) {
+									start.origin.trigger("swipeupdown").trigger(start.coords[1] > stop.coords[1] ? "swipeup" : "swipedown");
+								}
+							}
+						start = stop = undefined;
+					});
+				});
+			}
+		};
+				 
+		//Adds the events to the jQuery events special collection
+		$.each({
+			swipedown: "swipeupdown",
+			swipeup: "swipeupdown"
+		}, function(event, sourceEvent){
+			$.event.special[event] = {
+				setup: function(){
+					$(this).bind(sourceEvent, $.noop);
+				}
+			};
+		});
+	})();
+
+
+
+	//모바일에서 jquery ui를 사용하기 위함
+	!function(a){function f(a,b){if(!(a.originalEvent.touches.length>1)){a.preventDefault();var c=a.originalEvent.changedTouches[0],d=document.createEvent("MouseEvents");d.initMouseEvent(b,!0,!0,window,1,c.screenX,c.screenY,c.clientX,c.clientY,!1,!1,!1,!1,0,null),a.target.dispatchEvent(d)}}if(a.support.touch="ontouchend"in document,a.support.touch){var e,b=a.ui.mouse.prototype,c=b._mouseInit,d=b._mouseDestroy;b._touchStart=function(a){var b=this;!e&&b._mouseCapture(a.originalEvent.changedTouches[0])&&(e=!0,b._touchMoved=!1,f(a,"mouseover"),f(a,"mousemove"),f(a,"mousedown"))},b._touchMove=function(a){e&&(this._touchMoved=!0,f(a,"mousemove"))},b._touchEnd=function(a){e&&(f(a,"mouseup"),f(a,"mouseout"),this._touchMoved||f(a,"click"),e=!1)},b._mouseInit=function(){var b=this;b.element.bind({touchstart:a.proxy(b,"_touchStart"),touchmove:a.proxy(b,"_touchMove"),touchend:a.proxy(b,"_touchEnd")}),c.call(b)},b._mouseDestroy=function(){var b=this;b.element.unbind({touchstart:a.proxy(b,"_touchStart"),touchmove:a.proxy(b,"_touchMove"),touchend:a.proxy(b,"_touchEnd")}),d.call(b)}}}(jQuery);
+    </script>
+  </head>
+
+  <body>
+    <div class="container">
+    	<div class="container_warraper">
+
+        <div class="container_event" style="z-index: 25; position: absolute"></div>
+
+        <div class="appdown" style="z-index: 30; top:90%; left:50%; position:relative"><a href = "https://play.google.com/store/apps/category/GAME?hl=ko"><img id="appdown" src="wavearro.png" style="max-width: 5%; height: auto;"></a></div>
+
+	    	<video src="Boxing.mp4" class="video" id="video" type="video/mp4" style="z-index: 0; top: 0; left: 0; position: relative"></video>
+
+    	</div>
+   	</div>
+  </body>
+</html>
