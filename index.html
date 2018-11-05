@@ -27,7 +27,7 @@
      	}
      	.container{
      		width: 100%;
-     		height: 617px; //이거 조절
+     		height: auto; //이거 조절
      		min-height: 100%;
      		margin: 0 auto;
      	}
@@ -51,17 +51,17 @@
      	.draggable{
      		width: 100%;
      		height: 100%;
-        position:absolute;
+
      	}
      	#draggableX{
 			background-color: black;
-      position:absolute;
+
       top:0px;
       left:0px;
      	}
      	#draggableY{
      		background-color: red;
-        position:absolute;
+
      		top:0px;
      		left:0px;
      	}
@@ -72,7 +72,7 @@
      	.droppable{
      		width: 100%;
      		height: 100%;
-        position:absolute;
+
      	}
 
      	#droppableY{
@@ -136,7 +136,7 @@
 		$(document).ready(function(){
 			//eventFunc
 			var target = $('.container_event');
-      var targetv = $('.video');
+      var targetv = $('video');
 			var draggable = $('.draggable');
       var onlytap = true;
 
@@ -152,11 +152,11 @@
 
 			//swipe event
 			target.on('swipeleft',function(){
-        onlytap = false;
+        //onlytap = false;
 				console.log('swipeleft');
 			});
 			target.on('swiperight',function(){
-        onlytap = false;
+        //onlytap = false;
 				console.log('swiperight');
         if(step3 && stepNow == 6)
         {
@@ -167,7 +167,7 @@
         }
 			});
 			target.on('swipeup',function(){
-        onlytap = false;
+        //onlytap = false;
 				console.log('swipeup');
         if(step1 && stepNow == 2)
         {
@@ -178,18 +178,18 @@
         }
 			});
 			target.on('swipedown',function(){
-        onlytap = false;
+        //onlytap = false;
 				console.log('swipedown');
 			});
 			target.on('taphold',function(){
-        onlytap = false;
+        //onlytap = false;
 				console.log('taphold');
 			});
 			//누를때마다 재생, 멈춤
 			target.on('tap',function(){
-        console.log('ontap : ' + onlytap);
-        if(onlytap)
-        {
+        //console.log('ontap : ' + onlytap);
+        //if(onlytap)
+        //{
 				  console.log('tap');
           if(stepNow == 0)
           {
@@ -204,10 +204,11 @@
             eventFunc.targetPlayAndPause();
             console.log('tap on!');
           }
-        }
-        else {
-          onlytap = true;
-        }
+        //}
+        //else {
+        //  console.log('ather tap');
+        //  onlytap = true;
+        //}
 			});
 
 			//axis : 드래그 방향 , containerment : 벗어나지 못하도록, scroll : 벗어나는 경우 스크롤바 안생기게
@@ -241,7 +242,7 @@
 
             console.log(video.currentTime + "   Now : " + stepNow + "  step1 : " + step1 + "  step2 : " + step2 + "  step3 : " + step3);
 
-            if( video.currentTime >= 3 && step1)  {
+            if( video.currentTime >= 5.5 && step1)  {
                 video.pause();
 
                 //document.getElementById("swipe1").style.display = "block";
@@ -250,15 +251,15 @@
 
                 console.log("1차 정지");
             }
-            else if( video.currentTime >= 9 && step2) {
+            else if( video.currentTime >= 11.5 && step2) {
                 video.pause();
 
-                //document.getElementById("tap").style.display = "block";
+                document.getElementById("tap").style.display = "block";
                 stepNow = 4;
 
                 console.log("2차 정지");
             }
-            else if( video.currentTime >= 14 && step3 ) {
+            else if( video.currentTime >= 16.2 && step3 ) {
                 video.pause();
 
                 //document.getElementById("swipe2").style.display = "block";
@@ -358,14 +359,10 @@
   <body>
     <div class="container">
     	<div class="container_warraper">
-
-        <div class="container_event" style="z-index: 25; position: absolute"></div>
-
-        <div class="appdown" style="z-index: 30; top:90%; left:50%; position:relative"><a href = "https://play.google.com/store/apps/category/GAME?hl=ko"><img id="appdown" src="wavearro.png" style="max-width: 5%; height: auto;"></a></div>
-
-	    	<video src="Boxing.mp4" class="video" id="video" type="video/mp4" style="z-index: 0; top: 0; left: 0; position: relative"></video>
-
-    	</div>
+        <div class="container_event" style="z-index: 5; position: absolute"></div>
+           <video src="Boxing.mp4" class="video" id="video" type="video/mp4" style="z-index: 0; top: 0; left: 0; height: 0%: position: absolute"></video>
+           <div class="appdown" style="z-index: 10; top:0%; left:5%; position: absolute "><a href = "https://play.google.com/store/apps/category/GAME?hl=ko"><img id="appdown" src="buttonex.png" style="z-index: 10; width: 100%; height: 100%"></a></div>
+      </div>
    	</div>
   </body>
 </html>
