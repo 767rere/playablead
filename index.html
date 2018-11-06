@@ -98,10 +98,6 @@
     			$(this.targetv).get(0).pause();
     		},
     		targetPlay : function(){
-          if(stepNow == 0)
-          {
-            stepNow = 1;
-          }
     			$(this.targetv).get(0).play();
     		},
     		targetPlayAndPause : function(){
@@ -193,6 +189,8 @@
         //if(onlytap)
         //{
 				  console.log('tap');
+
+          console.log("stepNow" + stepNow);
           //처음 시작
           if(stepNow == 0)
           {
@@ -231,7 +229,7 @@
 			});
       var video = document.getElementById("video");
 
-      //document.getElementById("appdown").style.display = "none";
+      document.getElementById("appdown").style.display = "none";
 
 
       if(video) {
@@ -342,8 +340,7 @@
     	<div class="container_warraper">
         <div class="container_event" style="z-index: 5; position: absolute"></div>
            <video src="Boxing.mp4" class="video" id="video" type="video/mp4" style="z-index: 0; top: 0; left: 0; height: 0%: position: absolute; object-fit: contain"></video>
-           <div class="appdown" style="z-index: 10; top:65%; left:55%; position: fixed"><a href = "https://play.google.com/store/apps/category/GAME?hl=ko"><img id="appdown" src="buttonex.png" style="z-index: 10"></a></div>
-      </div>
+           <div clas3="appdown" style="z-index: 10; top:70%; left:30%; position: absolute"><a href = "https://play.google.com/store/apps/category/GAME?hl=ko"><img id="appdown" src="buttonex.png" style="z-index: 10"></a></div   </div>
    	</div>
   </body>
 </html>
