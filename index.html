@@ -133,10 +133,10 @@
 			//swipe event
 			target.on('swipeleft',function(){
         console.log('swipeleft');
+        //onlytap = false;
         event.preventDefault();
         event.stopPropagation();
         return false;
-        //onlytap = false;
 			});
 			target.on('swiperight',function(){
         console.log('swiperight');
@@ -148,11 +148,11 @@
           eventFunc.targetPlayAndPause();
           console.log('swiperight upon!');
         }
-			});
-			target.on('swipeup',function(){
         event.preventDefault();
         event.stopPropagation();
-        //return false;
+        return false;
+			});
+			target.on('swipeup',function(){
         //onlytap = false;
 				console.log('swipeup');
         if(step1 && stepNow == 2)
@@ -167,24 +167,21 @@
         return false;
 			});
 			target.on('swipedown',function(){
-        event.preventDefault();
-        event.stopPropagation();
-        //return false;
         //onlytap = false;
 				console.log('swipedown');
-			});
-			target.on('taphold',function(){
         event.preventDefault();
         event.stopPropagation();
         //return false;
+			});
+			target.on('taphold',function(){
         //onlytap = false;
 				console.log('taphold');
+        event.preventDefault();
+        event.stopPropagation();
+        //return false;
 			});
 			//누를때마다 재생, 멈춤
 			target.on('tap',function(){
-        event.preventDefault();
-        event.stopPropagation();
-        //return false;
         //console.log('ontap : ' + onlytap);
         //if(onlytap)
         //{
@@ -210,6 +207,9 @@
         //  console.log('ather tap');
         //  onlytap = true;
         //}
+        event.preventDefault();
+        event.stopPropagation();
+        //return false;
 			});
 			//axis : 드래그 방향 , containerment : 벗어나지 못하도록, scroll : 벗어나는 경우 스크롤바 안생기게
 			$("#draggableX").draggable({axis: "x", containment: "parent", scroll: false });
