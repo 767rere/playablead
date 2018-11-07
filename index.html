@@ -24,7 +24,7 @@
      	}
      	html, body{
         overflow: hidden;
-        -webkit-overflow-scrolling: touch;
+        -webter
         scrollTop: 0;
      	}
      	.container{
@@ -81,7 +81,8 @@
     			}
     		},
     		//timer
-    		//that : eventFunc의 targetPause를 사용하기 위함, 지금은 변수로 넘겨주는데 나중에 상속받아 쓸 것
+
+        //that : eventFunc의 targetPause를 사용하기 위함, 지금은 변수로 넘겨주는데 나중에 상속받아 쓸 것
     		//end : 동영상이 멈추는 시간, 1000 = 1초
     		targetPauseTimer : function(that, end){
     			var timer = setInterval(function(){
@@ -117,7 +118,8 @@
         {
           step3 = false;
           stepNow = 7;
-          eventFunc.targetPlayAndPause();
+          //eventFunc.targetPlayAndPause();
+          eventFunc.targetPlay();
           console.log('swiperight upon!');
         }
 			});
@@ -128,7 +130,8 @@
         {
           step1 = false;
           stepNow = 3;
-          eventFunc.targetPlayAndPause();
+          //eventFunc.targetPlayAndPause();
+          eventFunc.targetPlay();
           console.log('swipeup on!');
         }
 			});
@@ -159,7 +162,8 @@
           {
             step2 = false;
             stepNow = 5;
-            eventFunc.targetPlayAndPause();
+            //eventFunc.targetPlayAndPause();
+            eventFunc.targetPlay();
             console.log('tap on!');
           }
         }
@@ -191,32 +195,49 @@
       if(video) {
         video.addEventListener("timeupdate", function() {
             console.log(video.currentTime + "   Now : " + stepNow + "  step1 : " + step1 + "  step2 : " + step2 + "  step3 : " + step3);
-            if(stepNow == 0 && video.currentTime > 0.0)
+            if(stepNow == 0 && video.currentTime != 0.0)
             {
               stepNow = 1;
             }
-
-            if( video.currentTime >= 5.3 && step1)  {
+            if( video.currentTime >= 3 && stepNow == 1 ) {
+              stepNow = 2;
+            }
+            else if( video.currentTime >= 5.3 && stepNow == 2 ) {
+              if( step1 == true ) {
                 video.pause();
                 //document.getElementById("swipe1").style.display = "block";
                 //document.getElementById("swipe1bg").style.display = "block";
-                stepNow = 2;
+                //stepNow = 2;
                 console.log("1차 정지");
+              }
             }
-            else if( video.currentTime >= 11.5 && step2) {
-                video.pause();
-                //document.getElementById("tap").style.display = "block";
-                stepNow = 4;
-                console.log("2차 정지");
+
+            if( video.currentTime >= 9 && stepNow == 3 ) {
+              stepNow = 4;
             }
-            else if( video.currentTime >= 16.2 && step3 ) {
+            else if( video.currentTime >= 11.5 && stepNow == 4) {
+                if( step2 == true ) {
+                  video.pause();
+                  //document.getElementById("tap").style.display = "block";
+                  //stepNow = 4;
+                  console.log("2차 정지");
+              }
+            }
+
+            if( video.currentTime >= 14 && stepNow == 5 ) {
+              stepNow = 6;
+            }
+            else if( video.currentTime >= 16.2 && stepNow == 6 ) {
+              if( step3 == true ) {
                 video.pause();
                 //document.getElementById("swipe2").style.display = "block";
                 //document.getElementById("swipe2bg").style.display = "block";
-                stepNow = 6;
+                //stepNow = 6;
                 console.log("3차 정지");
+              }
             }
-            else if( video.currentTime >= 20.5 ) {
+
+            if( video.currentTime >= 20.5 ) {
                 document.getElementById("appdown").style.display = "block";
                 console.log("다운 광고");
             }
@@ -302,7 +323,12 @@
     <div class="container">
         <div class="container_event" style="z-index: 5; position: relative">
            <video src="Boxing.mp4" class="video" id="video" type="video/mp4" style="z-index: 0; top: 0; left: 0; height: 0%: position: absolute; object-fit: contain"></video>
-           <div clas3="appdown" style="z-index: 10; top:70%; left:31%; width: 100%; position: absolute"><a href = "https://play.google.com/store/apps/category/GAME?hl=ko"><img id="appdown" src="buttonex.png" style="z-index: 10" width="40%" hiehgt="auto"></a></div>
+           <div clas3="appdown" style="z-index: 10; top:70%; left:31%; width: 100%; position: absolute">
+             <a href = "https://play.google.com/store/apps/details?id=com.ftt.boxingstar.gl.aos&hl=ko" width="337px height=100px">
+               <!--<img id="appdown" src="buttonex.png" style="z-index: 10" width="40%" hiehgt="auto">-->
+                <button id="appdown" style="width:40%; height: 100%; background-color: #ffffff; background-color: rgba(255,255,255,0.0); padding:130px"></button>
+             </a>
            </div>
+         </div>
   </body>
 </html>
