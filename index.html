@@ -23,7 +23,9 @@
      		padding: 0;
      	}
      	html, body{
-		overflow: hidden;
+        overflow: hidden;
+        -webkit-overflow-scrolling: touch;
+        scrollTop: 0;
      	}
      	.container{
      		width: 100%;
@@ -38,7 +40,6 @@
      	.video{
      		width: 100%;
      		height: auto;
-		controls: false;
      	}
      	.draggable{
      		width: 100%;
@@ -102,16 +103,16 @@
 			eventFunc.targetPlay(); //동영상 시작
 			//eventFunc.targetPauseTimer(eventFunc, 3000); //3초후 멈춤
 			//swipe event
+
+      onlytap = true;
+
 			target.on('swipeleft',function(){
         console.log('swipeleft');
-        //onlytap = false;
-        event.preventDefault();
-        event.stopPropagation();
-        return false;
+        onlytap = false;
 			});
 			target.on('swiperight',function(){
         console.log('swiperight');
-        //onlytap = false;
+        onlytap = false;
         if(step3 && stepNow == 6)
         {
           step3 = false;
@@ -119,13 +120,10 @@
           eventFunc.targetPlayAndPause();
           console.log('swiperight upon!');
         }
-        event.preventDefault();
-        event.stopPropagation();
-        return false;
 			});
 			target.on('swipeup',function(){
-        //onlytap = false;
 				console.log('swipeup');
+        onlytap = false;
         if(step1 && stepNow == 2)
         {
           step1 = false;
@@ -133,29 +131,20 @@
           eventFunc.targetPlayAndPause();
           console.log('swipeup on!');
         }
-        event.preventDefault();
-        event.stopPropagation();
-        return false;
 			});
 			target.on('swipedown',function(){
-        //onlytap = false;
 				console.log('swipedown');
-        event.preventDefault();
-        event.stopPropagation();
-        //return false;
+        onlytap = false;
 			});
 			target.on('taphold',function(){
-        //onlytap = false;
 				console.log('taphold');
-        event.preventDefault();
-        event.stopPropagation();
-        //return false;
+        onlytap = false;
 			});
 			//누를때마다 재생, 멈춤
 			target.on('tap',function(){
         //console.log('ontap : ' + onlytap);
-        //if(onlytap)
-        //{
+        if(onlytap)
+        {
 				  console.log('tap');
 
           //console.log("stepNow" + stepNow);
@@ -173,15 +162,11 @@
             eventFunc.targetPlayAndPause();
             console.log('tap on!');
           }
-        //}
-        //else {
-        //  console.log('ather tap');
-        //  onlytap = true;
-        //}
-        event.preventDefault();
-        event.stopPropagation();
-        //return false;
-			});
+        }
+        else {
+          onlytap = true;
+        }
+        });
 			//axis : 드래그 방향 , containerment : 벗어나지 못하도록, scroll : 벗어나는 경우 스크롤바 안생기게
 			$("#draggableX").draggable({axis: "x", containment: "parent", scroll: false });
 			//click시 비디오 플레이
