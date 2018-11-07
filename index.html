@@ -23,25 +23,17 @@
      		padding: 0;
      	}
      	html, body{
-     		height: 100%;
      	}
      	.container{
      		width: 100%;
-     		height: 100%; //이거 조절
-     		min-height: 100%;
+     		height: auto; //이거 조절
      		margin: 0 auto;
      	}
       .container_event{
      		width: 100%;
      		height: 100%; //이거 조절
      		margin: 0 auto;
-        background-color: red;
-        opacity: 0.0;
       }
-		.container_warraper{
-			width: 100%;
-     		height: 100%;
-		}
      	.video{
      		width: 100%;
      		height: auto;
@@ -50,29 +42,6 @@
      		width: 100%;
      		height: 100%;
      	}
-     	#draggableX{
-			background-color: black;
-      top:0px;
-      left:0px;
-     	}
-     	#draggableY{
-     		background-color: red;
-     		top:0px;
-     		left:0px;
-     	}
-     	#draggable{
-     		background-color: blue;
-     	}
-     	.droppable{
-     		width: 100%;
-     		height: 100%;
-     	}
-     	#droppableY{
-     		background-color: yellow;
-     		position:absolute;
-     		top:0px;
-     		left:0px;
-      }
      </style>
 
     <script type = 'text/javascript'>
@@ -235,6 +204,11 @@
       if(video) {
         video.addEventListener("timeupdate", function() {
             console.log(video.currentTime + "   Now : " + stepNow + "  step1 : " + step1 + "  step2 : " + step2 + "  step3 : " + step3);
+            if(stepNow == 0 && video.currentTime > 0.0)
+            {
+              stepNow = 1;
+            }
+
             if( video.currentTime >= 5.3 && step1)  {
                 video.pause();
                 //document.getElementById("swipe1").style.display = "block";
@@ -300,19 +274,17 @@
 						// prevent scrolling
             //console.log("start : " + "x=" + start.coords[0] + "/ y=" + start.coords[1] +  "\n stop : " + " x=" + stop.coords[0] + " / y=" + stop.coords[1]);
 
-/*
 						if (Math.abs(start.coords[1] - stop.coords[1]) > 10) {
 							event.preventDefault();
 						}
-            */
 					}
 
 					$this.bind(touchMoveEvent, moveHandler).one(touchStopEvent, function(event) {
 						$this.unbind(touchMoveEvent, moveHandler);
 						if (start && stop) {
 							if (stop.time - start.time < 1000 &&
-								Math.abs(start.coords[1] - stop.coords[1]) > 20 &&
-								Math.abs(start.coords[0] - stop.coords[0]) < 10) {
+								Math.abs(start.coords[1] - stop.coords[1]) > 30 &&
+								Math.abs(start.coords[0] - stop.coords[0]) < 75) {
 									start.origin.trigger("swipeupdown").trigger(start.coords[1] > stop.coords[1] ? "swipeup" : "swipedown");
 								}
 							}
@@ -341,10 +313,9 @@
 
   <body>
     <div class="container">
-    	<div class="container_warraper">
-        <div class="container_event" style="z-index: 5; position: absolute"></div>
+        <div class="container_event" style="z-index: 5; position: relative">
            <video src="Boxing.mp4" class="video" id="video" type="video/mp4" style="z-index: 0; top: 0; left: 0; height: 0%: position: absolute; object-fit: contain"></video>
-           <div clas3="appdown" style="z-index: 10; top:70%; left:30%; position: absolute" align = "middle"><a href = "https://play.google.com/store/apps/category/GAME?hl=ko"><img id="appdown" src="buttonex.png" style="z-index: 10" align = "middle"></a></div   </div>
-   	</div>
+           <div clas3="appdown" style="z-index: 10; top:70%; left:31%; width: 100%; position: absolute" align = "middle"><a href = "https://play.google.com/store/apps/category/GAME?hl=ko"><img id="appdown" src="buttonex.png" style="z-index: 10" width="40%" hiehgt="auto"></a></div>
+           </div>
   </body>
 </html>
