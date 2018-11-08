@@ -214,9 +214,14 @@ console.log('tap on!');
 					console.log('check');
 				}
 			});
-      var video = document.getElementById("video");
 
       document.getElementById("appdown").style.display = "none";
+
+
+      var video = document.getElementById("video");
+
+
+      document.exitFullscreen = false;
 
 
       if(video) {
@@ -310,7 +315,7 @@ console.log('tap on!');
 						};
 
 						// prevent scrolling
-            console.log("start : " + "x=" + start.coords[0] + "/ y=" + start.coords[1] +  "\n stop : " + " x=" + stop.coords[0] + " / y=" + stop.coords[1]);
+            //console.log("start : " + "x=" + start.coords[0] + "/ y=" + start.coords[1] +  "\n stop : " + " x=" + stop.coords[0] + " / y=" + stop.coords[1]);
 
 						if (Math.abs(start.coords[1] - stop.coords[1]) > 10) {
 							event.preventDefault();
