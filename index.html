@@ -48,6 +48,7 @@
      </style>
 
     <script type = 'text/javascript'>
+    console.log('javascript start');
       var step1 = true;
       var step2 = true;
       var step3 = true;
@@ -64,15 +65,19 @@
    			},
    			//target은 이벤트 주체가 되는 비디오를 말함
     		targetReset : function(){
+          console.log('targetReset function');
     			this.targetv = null;
     		},
     		targetPause : function(){
+          console.log('targetPause function');
     			$(this.targetv).get(0).pause();
     		},
     		targetPlay : function(){
+          console.log('targetPlay function');
     			$(this.targetv).get(0).play();
     		},
     		targetPlayAndPause : function(){
+          console.log('targetPlayAndPause function');
     			var pause = $(this.targetv).get(0).paused;
     			if(!pause){
     				this.targetPause();
@@ -85,6 +90,7 @@
         //that : eventFunc의 targetPause를 사용하기 위함, 지금은 변수로 넘겨주는데 나중에 상속받아 쓸 것
     		//end : 동영상이 멈추는 시간, 1000 = 1초
     		targetPauseTimer : function(that, end){
+          console.log('targetPauseTimer function');
     			var timer = setInterval(function(){
     				that.targetPause();
     				clearInterval(timer);
@@ -92,11 +98,12 @@
     		}
     	};
 		$(document).ready(function(){
+      console.log('ready function');
 			//eventFunc
 			var target = $('.container_event');
       var targetv = $('video');
 			var draggable = $('.draggable');
-      var onlytap = true;
+      //var onlytap = true;
 			eventFunc.target = target; //이벤트 주체
       eventFunc.targetv = targetv; //이벤트 주체 -> 여기서는 비디오
 			eventFunc.draggable = draggable; //움직일 놈들
@@ -107,18 +114,25 @@
 
       if( eventFunc.targetPlay() )
       {
+        console.log('if targetPlay function');
         targetv.document.exitFullscreen = false;
       }
 
-      onlytap = true;
+      //console.log('1 onlytap:' + onlytap);
+
+      //onlytap = true;
 
 			target.on('swipeleft',function(){
+        //console.log('2 onlytap:' + onlytap);
         console.log('swipeleft');
-        onlytap = false;
+        //onlytap = false;
+        //console.log('3 onlytap:' + onlytap);
 			});
 			target.on('swiperight',function(){
+        //console.log('4 onlytap:' + onlytap);
         console.log('swiperight');
-        onlytap = false;
+        //onlytap = false;
+        //console.log('5 onlytap:' + onlytap);
         if(step3 && stepNow == 6)
         {
           step3 = false;
@@ -129,8 +143,10 @@
         }
 			});
 			target.on('swipeup',function(){
+        //console.log('6 onlytap:' + onlytap);
 				console.log('swipeup');
-        onlytap = false;
+        //onlytap = false;
+        //console.log('7 onlytap:' + onlytap);
         if(step1 && stepNow == 2)
         {
           step1 = false;
@@ -141,18 +157,24 @@
         }
 			});
 			target.on('swipedown',function(){
+        //console.log('8 onlytap:' + onlytap);
 				console.log('swipedown');
-        onlytap = false;
+        //onlytap = false;
+        //console.log('9 onlytap:' + onlytap);
 			});
 			target.on('taphold',function(){
+        //console.log('10 onlytap:' + onlytap);
 				console.log('taphold');
-        onlytap = false;
+        //onlytap = false;
+        //console.log('11 onlytap:' + onlytap);
 			});
 			//누를때마다 재생, 멈춤
 			target.on('tap',function(){
+        //console.log('12 onlytap:' + onlytap);
         //console.log('ontap : ' + onlytap);
-        if(onlytap)
-        {
+        //if(onlytap)
+        //{
+        //  console.log('13 onlytap:' + onlytap);
 				  console.log('tap');
 
           //console.log("stepNow" + stepNow);
@@ -172,11 +194,17 @@
             eventFunc.targetPlay();
             console.log('tap on!');
           }
-        }
-        else {
-          onlytap = true;
-        }
+      //    console.log('14 onlytap:' + onlytap);
+      //  }
+      //  else {
+      //    console.log('15 onlytap:' + onlytap);
+      //    onlytap = true;
+      //    console.log('16 onlytap:' + onlytap);
+      //  }
         });
+
+      //  console.log('17 onlytap:' + onlytap);
+
 			//axis : 드래그 방향 , containerment : 벗어나지 못하도록, scroll : 벗어나는 경우 스크롤바 안생기게
 			$("#draggableX").draggable({axis: "x", containment: "parent", scroll: false });
 			//click시 비디오 플레이
@@ -199,8 +227,10 @@
 
 
       if(video) {
+        console.log('if(video)');
         video.addEventListener("timeupdate", function() {
-            console.log(video.currentTime + "   Now : " + stepNow + "  step1 : " + step1 + "  step2 : " + step2 + "  step3 : " + step3);
+            console.log('video.addEventListener("timeupdate", function()');
+//console.log(video.currentTime + "   Now : " + stepNow + "  step1 : " + step1 + "  step2 : " + step2 + "  step3 : " + step3);
             if(stepNow == 0 && video.currentTime != 0.0)
             {
               stepNow = 1;
@@ -214,7 +244,7 @@
                 //document.getElementById("swipe1").style.display = "block";
                 //document.getElementById("swipe1bg").style.display = "block";
                 //stepNow = 2;
-                console.log("1차 정지");
+//console.log("1차 정지");
               }
             }
 
@@ -226,7 +256,7 @@
                   video.pause();
                   //document.getElementById("tap").style.display = "block";
                   //stepNow = 4;
-                  console.log("2차 정지");
+//console.log("2차 정지");
               }
             }
 
@@ -239,13 +269,14 @@
                 //document.getElementById("swipe2").style.display = "block";
                 //document.getElementById("swipe2bg").style.display = "block";
                 //stepNow = 6;
-                console.log("3차 정지");
+//console.log("3차 정지");
               }
             }
 
             if( video.currentTime >= 20.5 ) {
                 document.getElementById("appdown").style.display = "block";
-                console.log("다운 광고");
+
+//console.log("다운 광고");
             }
           });
         }
